@@ -108,14 +108,13 @@ gulp.task( 'sass', function() {
 var speakers = require('./src/data/speaker-data.json');
 
 gulp.task('handlebars', function() {  
-    for(var i=0; i<speakers.length; i++) {
-        var speaker = speakers[i],
-            fileName = speaker.fullName.replace(/ +/g, '-').toLowerCase();
+    // for(var i=0; i<speakers.length; i++) {
+        var speaker = speakers[0];
 
         gulp.src([path.html])
             .pipe(handlebars(speaker))
             .pipe(gulp.dest(path.dest));
-    }
+    // }
 });
 
 // default task
