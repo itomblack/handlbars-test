@@ -1,16 +1,29 @@
 <!DOCTYPE html>
-<html>
-<head>
-  @@include('./inc/head.html')
-  <title></title> <!-- ADD A TITLE! -->
-</head>
-<body>
+  <head>
+    <meta charset="utf-8">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
 
-  <h1>Hello World</h1>
+    <link rel="stylesheet" href="css/styles.css">
+
+    <title>Handlebars</title> <!-- ADD A TITLE! -->
+  </head>
+  <body>
+    <h2>Editing the test now.</h2>
+
+      <h1>{{fullName}}</h1>
+      <p>{{bio}}</p>
+      <p>
+          You can find me on <a href="http://www.twitter.com/{{twitterUsername}}">Twitter</a>,
+          <a href="http://www.github.com/{{githubUsername}}">GitHub</a> or my <a href="http://{{website}}">Website</a>.
+      </p>
 
 
 
-  <script src="js/vendor/jquery-2.1.1.min.js"></script>
-  <script src="js/main.js"></script>
-</body>
+
+    <script src="js/vendor/jquery-2.1.1.min.js"></script>
+    <script src="js/main.js"></script>
+  </body>
 </html>

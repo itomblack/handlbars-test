@@ -11,7 +11,9 @@ var            gulp = require( 'gulp' ),
             stylish = require( 'jshint-stylish' ),
             rimraf = require( 'rimraf' ),
             gulpSequence = require('gulp-sequence'),
-            fileinclude = require('gulp-file-include');
+            fileinclude = require('gulp-file-include'),
+            handlebars = require('gulp-compile-handlebars'),
+            rename = require('gulp-rename');
 
 // paths & files
 var path = {
@@ -26,6 +28,8 @@ var path = {
         img: 'src/img/**/*.*',
         destImg: 'dist/img/',
         dest: 'dist/',
+        handlebars: 'src/handlebars/*.handlebars',
+        handlebars2: 'src/*.handlebars',
 };
 
 // ports
@@ -51,7 +55,6 @@ gulp.task( 'jshint', function() {
 });
 
 
-
 // watch file
 gulp.task( 'watch', function(done) {
   var lrServer = gulpLivereload();
@@ -65,6 +68,7 @@ gulp.task( 'watch', function(done) {
   gulp.watch( path.js, ['js'] );
   gulp.watch( path.html, ['html'] );
   gulp.watch( path.sass, ['sass'] );
+  gulp.watch( path.html, ['handlebars']);
 });
 
 gulp.task('img', function(){
@@ -74,10 +78,6 @@ gulp.task('img', function(){
 
 gulp.task('html', function(){
   return gulp.src([path.html])
-    .pipe(fileinclude({
-      prefix: '@@',
-      basepath: '@file'
-    }))
     .pipe(gulp.dest(path.dest));
 });
 
@@ -104,7 +104,21 @@ gulp.task( 'sass', function() {
     .pipe( gulp.dest( path.destCss ) );
 });
 
+//handlebars
+var speakers = require('./src/data/speaker-data.json');
+
+gulp.task('handlebars', function() {  
+    for(var i=0; i<speakers.length; i++) {
+        var speaker = speakers[i],
+            fileName = speaker.fullName.replace(/ +/g, '-').toLowerCase();
+
+        gulp.src([path.html])
+            .pipe(handlebars(speaker))
+            .pipe(gulp.dest(path.dest));
+    }
+});
+
 // default task
 gulp.task( 'default', function(cb){
-  gulpSequence(['clean'], ['img'],  ['js', 'sass'], ['html'], ['server', 'watch'] )(cb);
+  gulpSequence(['clean'], ['img'], ['js', 'sass'], ['html'], ['handlebars'], ['server', 'watch'] )(cb);
 });
